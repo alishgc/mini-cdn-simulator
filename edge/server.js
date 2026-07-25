@@ -6,7 +6,8 @@ const axios = require("axios")
 
 const originUrl = "http://localhost:3000"
 
-const cache = new Map();
+const cache = new Map()
+const TTL = 5000
 
 app.get("/{*splat}", async (req, res) => {
 
@@ -22,19 +23,41 @@ app.get("/{*splat}", async (req, res) => {
     const isCached = cache.has(req.url)
 
     if (!isCached) {
-      const response = await axios.get(originUrl + req.url)
-
+      
       console.log (`[EDGE] Cache MISS: ${req.url}`)
 
-      cache.set(req.url, response.data)
+      const response = await axios.get(originUrl + req.url)
+
+      cache.set(req.url, {
+        data: response.data,
+        cachedAt: Date.now()
+      })
       
       res.send(response.data); 
     }
     
     else {
-      console.log(`[EDGE] Cache HIT: ${req.url}`)
 
-      res.send(cache.get(req.url))
+      const cached = cache.get(req.url);
+
+      const isExpired = Date.now() - cached.cachedAt > TTL
+      
+      if (isExpired) {
+        
+        console.log(`[EDGE] Cache EXPIRED: ${req.url}`)
+        
+        const response = await axios.get(originUrl + req.url)
+        
+        cache.set(req.url, {
+          data: response.data,
+          cachedAt: Date.now()
+        })
+        return res.send(response.data)
+      }
+
+      console.log(`[EDGE] Cache HIT: ${req.url}`)
+      
+      res.send(cached.data)
 
     }
   
