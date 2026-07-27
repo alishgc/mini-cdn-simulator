@@ -9,28 +9,21 @@ const edges = [
     "http://localhost:3002"
 ]
 
-
 let currentEdge = 0
 
 
 app.get("/{*splat}", async (req, res) => {
     
-    console.log("Before:", currentEdge);
-
     const selectedEdge = edges[currentEdge];
 
     currentEdge = (currentEdge + 1) % edges.length;
-
-    console.log("After:", currentEdge);
-    console.log("Selected:", selectedEdge);
 
     try {
         const response = await axios.get(selectedEdge + req.url);
         res.send(response.data);
         
     } catch (error) {
-        // console.log(Object.keys(error));
-        // console.log(error);
+
         console.log(error.response);
         res.sendStatus(error.response.status)
     }
@@ -38,10 +31,6 @@ app.get("/{*splat}", async (req, res) => {
 })
     
 
-
-
-
-
 app.listen(PORT, () => {
-  console.log(`Load Balancer running on http://localhost:8080`)
+  console.log(`Load Balancer running on http://localhost:${PORT}`)
 })
