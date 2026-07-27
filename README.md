@@ -53,9 +53,11 @@ mini-cdn-simulator/
 
 ```bash
 git clone https://github.com/alishgc/mini-cdn-simulator.git
-
+```
+```bash
 cd mini-cdn-simulator
-
+```
+```bash
 npm install 
 ```
 
