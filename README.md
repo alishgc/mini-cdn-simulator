@@ -74,3 +74,15 @@ npm run dev-edge2
 # Terminal 4
 npm run dev-lb
 ```
+
+## Load Testing
+
+Load testing was performed using [Autocannon](https://www.npmjs.com/package/autocannon).
+
+| Concurrency | Avg Req/Sec | Avg Latency | Total Requests |
+|---|---|---|---|
+| 10  | 233.3 | 42.48 ms  | ~2,000 |
+| 50  | 222.7 | 222.26 ms | ~2,000 |
+| 100 | 251.4 | 391.07 ms | ~3,000 |
+
+*Tests were run locally and are intended to demonstrate the simulator's behavior rather than measure production-level performance.*
