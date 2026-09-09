@@ -1,6 +1,20 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express()
-const PORT = process.env.PORT || 3001;
+
+const edge = process.argv[2];
+
+let PORT;
+
+if (edge === "1") {
+    PORT = process.env.EDGE_1_PORT;
+} else if (edge === "2") {
+    PORT = process.env.EDGE_2_PORT;
+} else {
+    console.error("Please specify edge 1 or 2");
+    process.exit(1);
+}
 
 const axios = require("axios")
 

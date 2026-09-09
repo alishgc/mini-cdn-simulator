@@ -1,6 +1,8 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express()
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.LB_PORT || 8080;
 
 const axios = require("axios")
 
